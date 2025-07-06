@@ -432,7 +432,7 @@
           showLoading('A analisar texto extraído...');
           
           try {
-            const response = await fetch('https://burlometro.onrender.com/api/analyze', {
+            const response = await fetch('https://burlometro.duckdns.org/api/analyze', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
@@ -492,7 +492,7 @@
       showLoading('A analisar com IA...');
 
       try {
-        const response = await fetch('https://burlometro.onrender.com/api/analyze', {
+        const response = await fetch('https://burlometro.duckdns.org/api/analyze', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

@@ -1,580 +1,607 @@
 <!DOCTYPE html>
 <html lang="pt-PT">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Burlómetro - Detector de Burlas</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Burlómetro - Detector de Burlas</title>
+    <!-- Basic favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon_io/favicon.ico">
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      color: #333;
-    }
+    <!-- PNG favicons for different sizes -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
 
-    .header {
-      text-align: center;
-      margin-bottom: 30px;
-      color: white;
-    }
+    <!-- Apple Touch Icon (iOS) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
 
-    .logo {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 15px;
-      border-radius: 20px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    }
+    <!-- Android Chrome -->
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon_io/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon_io/android-chrome-512x512.png">
 
-    .header h1 {
-      font-size: 2rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
+    <!-- Web App Manifest (optional) -->
+    <link rel="manifest" href="favicon_io/site.webmanifest">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .header p {
-      font-size: 1rem;
-      opacity: 0.9;
-      max-width: 400px;
-      line-height: 1.5;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
 
-    .container {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-      backdrop-filter: blur(10px);
-      padding: 30px;
-      width: 100%;
-      max-width: 600px;
-      min-height: 500px;
-      display: flex;
-      flex-direction: column;
-    }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
 
-    .input-section {
-      margin-bottom: 25px;
-    }
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
 
-    .input-tabs {
-      display: flex;
-      background: #f0f0f0;
-      border-radius: 12px;
-      padding: 4px;
-      margin-bottom: 20px;
-    }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
 
-    .tab-button {
-      flex: 1;
-      padding: 12px 20px;
-      border: none;
-      background: transparent;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      color: #666;
-    }
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 400px;
+            line-height: 1.5;
+        }
 
-    .tab-button.active {
-      background: white;
-      color: #007AFF;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
 
-    .tab-content {
-      display: none;
-    }
+        .input-section {
+            margin-bottom: 25px;
+        }
 
-    .tab-content.active {
-      display: block;
-    }
+        .input-tabs {
+            display: flex;
+            background: #f0f0f0;
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
 
-    .message-input {
-      width: 100%;
-      min-height: 120px;
-      padding: 18px;
-      border: 2px solid #e5e5e7;
-      border-radius: 18px;
-      font-size: 16px;
-      font-family: inherit;
-      resize: vertical;
-      transition: all 0.3s ease;
-      background: #f8f9fa;
-    }
+        .tab-button {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #666;
+        }
 
-    .message-input:focus {
-      outline: none;
-      border-color: #007AFF;
-      background: white;
-      box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
-    }
+        .tab-button.active {
+            background: white;
+            color: #007AFF;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    .upload-area {
-      border: 2px dashed #c1c1c3;
-      border-radius: 18px;
-      padding: 40px 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      background: #f8f9fa;
-    }
+        .tab-content {
+            display: none;
+        }
 
-    .upload-area:hover {
-      border-color: #007AFF;
-      background: rgba(0, 122, 255, 0.05);
-    }
+        .tab-content.active {
+            display: block;
+        }
 
-    .upload-area.dragover {
-      border-color: #007AFF;
-      background: rgba(0, 122, 255, 0.1);
-    }
+        .message-input {
+            width: 100%;
+            min-height: 120px;
+            padding: 18px;
+            border: 2px solid #e5e5e7;
+            border-radius: 18px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
 
-    .upload-icon {
-      font-size: 48px;
-      color: #c1c1c3;
-      margin-bottom: 15px;
-    }
+        .message-input:focus {
+            outline: none;
+            border-color: #007AFF;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+        }
 
-    .upload-text {
-      font-size: 16px;
-      color: #666;
-      margin-bottom: 8px;
-    }
+        .upload-area {
+            border: 2px dashed #c1c1c3;
+            border-radius: 18px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
 
-    .upload-subtext {
-      font-size: 14px;
-      color: #999;
-    }
+        .upload-area:hover {
+            border-color: #007AFF;
+            background: rgba(0, 122, 255, 0.05);
+        }
 
-    .file-input {
-      display: none;
-    }
+        .upload-area.dragover {
+            border-color: #007AFF;
+            background: rgba(0, 122, 255, 0.1);
+        }
 
-    .analyze-btn {
-      background: linear-gradient(135deg, #007AFF, #5856D6);
-      color: white;
-      border: none;
-      padding: 16px 32px;
-      border-radius: 14px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 20px;
-      width: 100%;
-      box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
-    }
+        .upload-icon {
+            font-size: 48px;
+            color: #c1c1c3;
+            margin-bottom: 15px;
+        }
 
-    .analyze-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
-    }
+        .upload-text {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 8px;
+        }
 
-    .analyze-btn:disabled {
-      background: #c1c1c3;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
+        .upload-subtext {
+            font-size: 14px;
+            color: #999;
+        }
 
-    .loading {
-      display: none;
-      align-items: center;
-      justify-content: center;
-      margin: 20px 0;
-    }
+        .file-input {
+            display: none;
+        }
 
-    .spinner {
-      width: 24px;
-      height: 24px;
-      border: 3px solid #f0f0f0;
-      border-top: 3px solid #007AFF;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-right: 12px;
-    }
+        .analyze-btn {
+            background: linear-gradient(135deg, #007AFF, #5856D6);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+        }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+        }
 
-    .result {
-      display: none;
-      margin-top: 25px;
-      padding: 20px;
-      border-radius: 16px;
-      animation: fadeIn 0.5s ease;
-    }
+        .analyze-btn:disabled {
+            background: #c1c1c3;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
 
-    .result.safe {
-      background: linear-gradient(135deg, #34c759, #30d158);
-      color: white;
-    }
+        .loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
 
-    .result.scam {
-      background: linear-gradient(135deg, #ff3b30, #ff453a);
-      color: white;
-    }
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid #f0f0f0;
+            border-top: 3px solid #007AFF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 12px;
+        }
 
-    .result.warning {
-      background: linear-gradient(135deg, #ff9500, #ffb143);
-      color: white;
-    }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
-    .result-icon {
-      font-size: 32px;
-      margin-bottom: 12px;
-    }
+        .result {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 16px;
+            animation: fadeIn 0.5s ease;
+        }
 
-    .result-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
+        .result.safe {
+            background: linear-gradient(135deg, #34c759, #30d158);
+            color: white;
+        }
 
-    .result-description {
-      font-size: 14px;
-      opacity: 0.9;
-      line-height: 1.5;
-    }
+        .result.scam {
+            background: linear-gradient(135deg, #ff3b30, #ff453a);
+            color: white;
+        }
 
-    .confidence-score {
-      margin-top: 15px;
-      padding: 12px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 10px;
-      font-size: 14px;
-    }
+        .result.warning {
+            background: linear-gradient(135deg, #ff9500, #ffb143);
+            color: white;
+        }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+        .result-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
 
-    .extracted-text {
-      background: #f0f0f0;
-      padding: 15px;
-      border-radius: 12px;
-      margin: 15px 0;
-      font-size: 14px;
-      border-left: 4px solid #007AFF;
-    }
+        .result-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
 
-    .extracted-text h4 {
-      margin-bottom: 8px;
-      color: #007AFF;
-    }
+        .result-description {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
 
-    @media (max-width: 768px) {
-      body {
-        padding: 15px;
-      }
-      
-      .container {
-        padding: 20px;
-        border-radius: 16px;
-      }
-      
-      .header h1 {
-        font-size: 1.5rem;
-      }
-      
-      .message-input {
-        min-height: 100px;
-        font-size: 16px; /* Prevent zoom on iOS */
-      }
-      
-      .upload-area {
-        padding: 30px 15px;
-      }
-      
-      .upload-icon {
-        font-size: 36px;
-      }
-    }
-  </style>
+        .confidence-score {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .extracted-text {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            font-size: 14px;
+            border-left: 4px solid #007AFF;
+        }
+
+        .extracted-text h4 {
+            margin-bottom: 8px;
+            color: #007AFF;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .message-input {
+                min-height: 100px;
+                font-size: 16px;
+                /* Prevent zoom on iOS */
+            }
+
+            .upload-area {
+                padding: 30px 15px;
+            }
+
+            .upload-icon {
+                font-size: 36px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <div class="header">
-    <img src="logo.png" alt="Burlómetro" class="logo" />
-    <h1>Burlómetro</h1>
-    <p>Detector inteligente de mensagens suspeitas. Carregue uma imagem ou digite o texto da mensagem para análise.</p>
-  </div>
+    <div class="header">
+        <img src="logo.png" alt="Burlómetro" class="logo" />
+        <h1>Burlómetro</h1>
+        <p>Detector inteligente de mensagens suspeitas. Carregue uma imagem ou digite o texto da mensagem para análise.
+        </p>
+    </div>
 
-  <div class="container">
-    <div class="input-section">
-      <div class="input-tabs">
-        <button class="tab-button active" onclick="switchTab('text')">✏️ Texto</button>
-        <button class="tab-button" onclick="switchTab('image')">📷 Imagem</button>
-      </div>
+    <div class="container">
+        <div class="input-section">
+            <div class="input-tabs">
+                <button class="tab-button active" onclick="switchTab('text')">✏️ Texto</button>
+                <button class="tab-button" onclick="switchTab('image')">📷 Imagem</button>
+            </div>
 
-      <div id="text-tab" class="tab-content active">
-        <textarea 
-          id="messageText" 
-          class="message-input" 
-          placeholder="Cole aqui o texto da mensagem suspeita..."
-        ></textarea>
-      </div>
+            <div id="text-tab" class="tab-content active">
+                <textarea id="messageText" class="message-input"
+                    placeholder="Cole aqui o texto da mensagem suspeita..."></textarea>
+            </div>
 
-      <div id="image-tab" class="tab-content">
-        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-          <div class="upload-icon">📸</div>
-          <div class="upload-text">Clique para carregar uma imagem</div>
-          <div class="upload-subtext">ou arraste e solte aqui</div>
+            <div id="image-tab" class="tab-content">
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">📸</div>
+                    <div class="upload-text">Clique para carregar uma imagem</div>
+                    <div class="upload-subtext">ou arraste e solte aqui</div>
+                </div>
+                <input type="file" id="fileInput" class="file-input" accept="image/*">
+            </div>
         </div>
-        <input type="file" id="fileInput" class="file-input" accept="image/*">
-      </div>
+
+        <button id="analyzeBtn" class="analyze-btn" onclick="analyzeMessage()">
+            🛡️ Analisar Mensagem
+        </button>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <span>A analisar mensagem...</span>
+        </div>
+
+        <div id="extractedText" class="extracted-text" style="display: none;">
+            <h4>📝 Texto extraído da imagem:</h4>
+            <div id="extractedContent"></div>
+        </div>
+
+        <div id="result" class="result">
+            <div class="result-icon" id="resultIcon"></div>
+            <div class="result-title" id="resultTitle"></div>
+            <div class="result-description" id="resultDescription"></div>
+            <div class="confidence-score" id="confidenceScore"></div>
+        </div>
     </div>
 
-    <button id="analyzeBtn" class="analyze-btn" onclick="analyzeMessage()">
-      🛡️ Analisar Mensagem
-    </button>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
-    <div id="loading" class="loading">
-      <div class="spinner"></div>
-      <span>A analisar mensagem...</span>
-    </div>
+    <script>
+        let currentTab = 'text';
+        let extractedTextContent = '';
 
-    <div id="extractedText" class="extracted-text" style="display: none;">
-      <h4>📝 Texto extraído da imagem:</h4>
-      <div id="extractedContent"></div>
-    </div>
+        function switchTab(tab) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
 
-    <div id="result" class="result">
-      <div class="result-icon" id="resultIcon"></div>
-      <div class="result-title" id="resultTitle"></div>
-      <div class="result-description" id="resultDescription"></div>
-      <div class="confidence-score" id="confidenceScore"></div>
-    </div>
-  </div>
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tab + '-tab').classList.add('active');
 
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-  
-  <script>
-    let currentTab = 'text';
-    let extractedTextContent = '';
+            currentTab = tab;
+            hideResult();
+        }
 
-    function switchTab(tab) {
-      // Update tab buttons
-      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      
-      // Update tab content
-      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-      document.getElementById(tab + '-tab').classList.add('active');
-      
-      currentTab = tab;
-      hideResult();
-    }
+        // File upload handling
+        const uploadArea = document.querySelector('.upload-area');
+        const fileInput = document.getElementById('fileInput');
 
-    // File upload handling
-    const uploadArea = document.querySelector('.upload-area');
-    const fileInput = document.getElementById('fileInput');
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
 
-    uploadArea.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      uploadArea.classList.add('dragover');
-    });
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
 
-    uploadArea.addEventListener('dragleave', () => {
-      uploadArea.classList.remove('dragover');
-    });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileUpload(files[0]);
+            }
+        });
 
-    uploadArea.addEventListener('drop', (e) => {
-      e.preventDefault();
-      uploadArea.classList.remove('dragover');
-      const files = e.dataTransfer.files;
-      if (files.length > 0) {
-        handleFileUpload(files[0]);
-      }
-    });
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileUpload(e.target.files[0]);
+            }
+        });
 
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files.length > 0) {
-        handleFileUpload(e.target.files[0]);
-      }
-    });
+        async function handleFileUpload(file) {
+            if (!file.type.startsWith('image/')) {
+                alert('Por favor, selecione apenas ficheiros de imagem.');
+                return;
+            }
 
-    async function handleFileUpload(file) {
-      if (!file.type.startsWith('image/')) {
-        alert('Por favor, selecione apenas ficheiros de imagem.');
-        return;
-      }
+            showLoading('A extrair texto da imagem...');
 
-      showLoading('A extrair texto da imagem...');
-      
-      try {
-        const { data: { text } } = await Tesseract.recognize(file, 'por');
-        extractedTextContent = text.trim();
-        
-        if (extractedTextContent) {
-          document.getElementById('extractedContent').textContent = extractedTextContent;
-          document.getElementById('extractedText').style.display = 'block';
-          uploadArea.innerHTML = `
+            try {
+                const { data: { text } } = await Tesseract.recognize(file, 'por');
+                extractedTextContent = text.trim();
+
+                if (extractedTextContent) {
+                    document.getElementById('extractedContent').textContent = extractedTextContent;
+                    document.getElementById('extractedText').style.display = 'block';
+                    uploadArea.innerHTML = `
             <div class="upload-icon">✅</div>
             <div class="upload-text">Imagem carregada com sucesso</div>
             <div class="upload-subtext">Texto extraído - A analisar...</div>
           `;
-          
-          // Automatically analyze the extracted text
-          showLoading('A analisar texto extraído...');
-          
-          try {
-            const response = await fetch('https://burlometro.duckdns.org/api/analyze', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                message: extractedTextContent
-              })
-            });
 
-            if (!response.ok) {
-              throw new Error('Erro na análise da IA');
-            }
+                    // Automatically analyze the extracted text
+                    showLoading('A analisar texto extraído...');
 
-            const analysis = await response.json();
-            showResult(analysis);
-            
-            // Update upload area to show analysis completed
-            uploadArea.innerHTML = `
+                    try {
+                        const response = await fetch('https://burlometro.duckdns.org/api/analyze', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                message: extractedTextContent
+                            })
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('Erro na análise da IA');
+                        }
+
+                        const analysis = await response.json();
+                        showResult(analysis);
+
+                        // Update upload area to show analysis completed
+                        uploadArea.innerHTML = `
               <div class="upload-icon">✅</div>
               <div class="upload-text">Análise concluída</div>
               <div class="upload-subtext">Veja o resultado abaixo</div>
             `;
-          } catch (analysisError) {
-            console.error('Erro na análise:', analysisError);
-            alert('Erro ao analisar o texto extraído. Tente novamente.');
-            uploadArea.innerHTML = `
+                    } catch (analysisError) {
+                        console.error('Erro na análise:', analysisError);
+                        alert('Erro ao analisar o texto extraído. Tente novamente.');
+                        uploadArea.innerHTML = `
               <div class="upload-icon">⚠️</div>
               <div class="upload-text">Texto extraído</div>
               <div class="upload-subtext">Clique em "Analisar Mensagem" para tentar novamente</div>
             `;
-          }
-        } else {
-          throw new Error('Não foi possível extrair texto da imagem');
-        }
-      } catch (error) {
-        console.error('Erro no OCR:', error);
-        alert('Erro ao processar a imagem. Tente novamente com uma imagem mais clara.');
-      } finally {
-        hideLoading();
-      }
-    }
-
-    async function analyzeMessage() {
-      let messageText = '';
-      
-      if (currentTab === 'text') {
-        messageText = document.getElementById('messageText').value.trim();
-      } else {
-        messageText = extractedTextContent;
-      }
-
-      if (!messageText) {
-        alert('Por favor, insira uma mensagem ou carregue uma imagem com texto.');
-        return;
-      }
-
-      showLoading('A analisar com IA...');
-
-      try {
-        const response = await fetch('https://burlometro.duckdns.org/api/analyze', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            message: messageText
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error('Erro na análise da IA');
+                    }
+                } else {
+                    throw new Error('Não foi possível extrair texto da imagem');
+                }
+            } catch (error) {
+                console.error('Erro no OCR:', error);
+                alert('Erro ao processar a imagem. Tente novamente com uma imagem mais clara.');
+            } finally {
+                hideLoading();
+            }
         }
 
-        const analysis = await response.json();
-        showResult(analysis);
-      } catch (error) {
-        console.error('Erro na análise:', error);
-        alert('Erro ao analisar a mensagem. Tente novamente.');
-      } finally {
-        hideLoading();
-      }
-    }
+        async function analyzeMessage() {
+            let messageText = '';
 
-    function showResult(analysis) {
-      const result = document.getElementById('result');
-      const icon = document.getElementById('resultIcon');
-      const title = document.getElementById('resultTitle');
-      const description = document.getElementById('resultDescription');
-      const confidence = document.getElementById('confidenceScore');
+            if (currentTab === 'text') {
+                messageText = document.getElementById('messageText').value.trim();
+            } else {
+                messageText = extractedTextContent;
+            }
 
-      // Clear previous classes
-      result.className = 'result';
-      
-      switch (analysis.risk_level) {
-        case 'safe':
-          result.classList.add('safe');
-          icon.textContent = '✅';
-          title.textContent = 'Mensagem Segura';
-          break;
-        case 'warning':
-          result.classList.add('warning');
-          icon.textContent = '⚠️';
-          title.textContent = 'Atenção Requerida';
-          break;
-        case 'scam':
-          result.classList.add('scam');
-          icon.textContent = '🚨';
-          title.textContent = 'BURLA DETECTADA';
-          break;
-      }
+            if (!messageText) {
+                alert('Por favor, insira uma mensagem ou carregue uma imagem com texto.');
+                return;
+            }
 
-      description.textContent = analysis.explanation;
-      confidence.textContent = `Confiança da análise: ${analysis.confidence}%`;
-      
-      result.style.display = 'block';
-    }
+            showLoading('A analisar com IA...');
 
-    function showLoading(message = 'A processar...') {
-      document.getElementById('loading').style.display = 'flex';
-      document.getElementById('loading').querySelector('span').textContent = message;
-      document.getElementById('analyzeBtn').disabled = true;
-    }
+            try {
+                const response = await fetch('https://burlometro.duckdns.org/api/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: messageText
+                    })
+                });
 
-    function hideLoading() {
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('analyzeBtn').disabled = false;
-    }
+                if (!response.ok) {
+                    throw new Error('Erro na análise da IA');
+                }
 
-    function hideResult() {
-      document.getElementById('result').style.display = 'none';
-      document.getElementById('extractedText').style.display = 'none';
-      extractedTextContent = '';
-      
-      // Reset upload area if switching from image tab
-      if (currentTab === 'image') {
-        uploadArea.innerHTML = `
+                const analysis = await response.json();
+                showResult(analysis);
+            } catch (error) {
+                console.error('Erro na análise:', error);
+                alert('Erro ao analisar a mensagem. Tente novamente.');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function showResult(analysis) {
+            const result = document.getElementById('result');
+            const icon = document.getElementById('resultIcon');
+            const title = document.getElementById('resultTitle');
+            const description = document.getElementById('resultDescription');
+            const confidence = document.getElementById('confidenceScore');
+
+            // Clear previous classes
+            result.className = 'result';
+
+            switch (analysis.risk_level) {
+                case 'safe':
+                    result.classList.add('safe');
+                    icon.textContent = '✅';
+                    title.textContent = 'Mensagem Segura';
+                    break;
+                case 'warning':
+                    result.classList.add('warning');
+                    icon.textContent = '⚠️';
+                    title.textContent = 'Atenção Requerida';
+                    break;
+                case 'scam':
+                    result.classList.add('scam');
+                    icon.textContent = '🚨';
+                    title.textContent = 'BURLA DETECTADA';
+                    break;
+            }
+
+            description.textContent = analysis.explanation;
+            confidence.textContent = `Confiança da análise: ${analysis.confidence}%`;
+
+            result.style.display = 'block';
+        }
+
+        function showLoading(message = 'A processar...') {
+            document.getElementById('loading').style.display = 'flex';
+            document.getElementById('loading').querySelector('span').textContent = message;
+            document.getElementById('analyzeBtn').disabled = true;
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('analyzeBtn').disabled = false;
+        }
+
+        function hideResult() {
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('extractedText').style.display = 'none';
+            extractedTextContent = '';
+
+            // Reset upload area if switching from image tab
+            if (currentTab === 'image') {
+                uploadArea.innerHTML = `
           <div class="upload-icon">📸</div>
           <div class="upload-text">Clique para carregar uma imagem</div>
           <div class="upload-subtext">ou arraste e solte aqui</div>
         `;
-      }
-    }
-  </script>
+            }
+        }
+    </script>
 </body>
+
 </html>

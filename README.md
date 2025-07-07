@@ -2,6 +2,8 @@
 
 Um detector inteligente de mensagens suspeitas que utiliza IA e OCR para identificar tentativas de burla/scam.
 
+Visite a ferramenta em  [burlometro.pt 🔗](https://burlometro.pt)
+
 ## ✨ Funcionalidades
 
 - 📝 **Análise de Texto**: Cole o texto da mensagem suspeita

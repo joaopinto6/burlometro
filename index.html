@@ -4,7 +4,45 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Burlómetro - Detector de Burlas</title>
+    <title>Burlómetro - Detector de Burlas Online | Análise IA de Mensagens Suspeitas</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Detector inteligente de burlas online que usa IA para analisar mensagens suspeitas. Carregue imagens ou digite texto para identificar tentativas de fraude, phishing e golpes." />
+    <meta name="keywords" content="detector burlas, análise mensagens suspeitas, phishing, fraude online, segurança digital, inteligência artificial, OCR, Portugal" />
+    <meta name="author" content="Burlómetro" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="pt-PT" />
+    <meta name="geo.region" content="PT" />
+    <meta name="geo.country" content="Portugal" />
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Burlómetro - Detector de Burlas Online com IA" />
+    <meta property="og:description" content="Proteja-se de burlas online! Análise inteligente de mensagens suspeitas usando IA. Carregue imagens ou digite texto para detectar fraudes." />
+    <meta property="og:image" content="https://burlometro.pt/logo.png" />
+    <meta property="og:url" content="https://burlometro.pt/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_PT" />
+    <meta property="og:site_name" content="Burlómetro" />
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Burlómetro - Detector de Burlas Online" />
+    <meta name="twitter:description" content="Detector inteligente que usa IA para identificar mensagens de burla. Proteja-se de fraudes online!" />
+    <meta name="twitter:image" content="https://burlometro.pt/logo.png" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://burlometro.pt/" />
+    
+    <!-- Robots.txt reference -->
+    <link rel="robots" href="https://burlometro.pt/robots.txt" />
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="theme-color" content="#667eea" />
+    <meta name="msapplication-TileColor" content="#667eea" />
+    <meta name="application-name" content="Burlómetro" />
+    <meta name="apple-mobile-web-app-title" content="Burlómetro" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <!-- Basic favicon -->
     <link rel="icon" type="image/x-icon" href="favicon_io/favicon.ico">
 
@@ -21,11 +59,57 @@
 
     <!-- Web App Manifest (optional) -->
     <link rel="manifest" href="favicon_io/site.webmanifest">
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Burlómetro",
+        "description": "Detector inteligente de burlas online que usa inteligência artificial para analisar mensagens suspeitas e identificar tentativas de fraude.",
+        "url": "https://burlometro.pt/",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Web Browser",
+        "browserRequirements": "HTML5, JavaScript",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR",
+            "availability": "https://schema.org/InStock"
+        },
+        "creator": {
+            "@type": "Organization",
+            "name": "Burlómetro"
+        },
+        "inLanguage": "pt-PT",
+        "isAccessibleForFree": true,
+        "featureList": [
+            "Análise de texto com IA",
+            "Reconhecimento ótico de caracteres (OCR)",
+            "Detecção de phishing",
+            "Análise de fraudes online",
+            "Interface em português"
+        ]
+    }
+    </script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
 
         body {
@@ -335,56 +419,62 @@
 </head>
 
 <body>
-    <div class="header">
-        <img src="logo.png" alt="Burlómetro" class="logo" />
+    <header class="header">
+        <img src="logo.png" alt="Burlómetro - Logótipo do detector de burlas online" class="logo" />
         <h1>Burlómetro</h1>
         <p>Detector inteligente de mensagens suspeitas. Carregue uma imagem ou digite o texto da mensagem para análise.
         </p>
-    </div>
+    </header>
 
-    <div class="container">
-        <div class="input-section">
-            <div class="input-tabs">
-                <button class="tab-button active" onclick="switchTab('text')">✏️ Texto</button>
-                <button class="tab-button" onclick="switchTab('image')">📷 Imagem</button>
+    <main class="container" role="main">
+        <section class="input-section" aria-label="Entrada de dados">
+            <div class="input-tabs" role="tablist" aria-label="Métodos de entrada">
+                <button class="tab-button active" onclick="switchTab('text')" role="tab" aria-selected="true" aria-controls="text-tab" id="text-tab-button">✏️ Texto</button>
+                <button class="tab-button" onclick="switchTab('image')" role="tab" aria-selected="false" aria-controls="image-tab" id="image-tab-button">📷 Imagem</button>
             </div>
 
-            <div id="text-tab" class="tab-content active">
+            <div id="text-tab" class="tab-content active" role="tabpanel" aria-labelledby="text-tab-button">
+                <label for="messageText" class="sr-only">Texto da mensagem suspeita</label>
                 <textarea id="messageText" class="message-input"
-                    placeholder="Cole aqui o texto da mensagem suspeita..."></textarea>
+                    placeholder="Cole aqui o texto da mensagem suspeita..." aria-describedby="text-help"></textarea>
+                <div id="text-help" class="sr-only">Digite ou cole o texto da mensagem que deseja analisar para possíveis burlas</div>
             </div>
 
-            <div id="image-tab" class="tab-content">
-                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                    <div class="upload-icon">📸</div>
+            <div id="image-tab" class="tab-content" role="tabpanel" aria-labelledby="image-tab-button">
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()" role="button" tabindex="0" aria-describedby="upload-help"
+                     onkeydown="if(event.key==='Enter'||event.key===' '){document.getElementById('fileInput').click()}">
+                    <div class="upload-icon" aria-hidden="true">📸</div>
                     <div class="upload-text">Clique para carregar uma imagem</div>
                     <div class="upload-subtext">ou arraste e solte aqui</div>
                 </div>
-                <input type="file" id="fileInput" class="file-input" accept="image/*">
+                <label for="fileInput" class="sr-only">Carregar ficheiro de imagem</label>
+                <input type="file" id="fileInput" class="file-input" accept="image/*" aria-describedby="upload-help">
+                <div id="upload-help" class="sr-only">Carregue uma imagem contendo texto de mensagem para análise automática</div>
             </div>
-        </div>
+        </section>
 
-        <button id="analyzeBtn" class="analyze-btn" onclick="analyzeMessage()">
+        <button id="analyzeBtn" class="analyze-btn" onclick="analyzeMessage()" aria-describedby="analyze-help">
             🛡️ Analisar Mensagem
         </button>
+        <div id="analyze-help" class="sr-only">Clique para iniciar a análise da mensagem usando inteligência artificial</div>
 
-        <div id="loading" class="loading">
-            <div class="spinner"></div>
+        <div id="loading" class="loading" role="status" aria-live="polite">
+            <div class="spinner" aria-hidden="true"></div>
             <span>A analisar mensagem...</span>
         </div>
 
-        <div id="extractedText" class="extracted-text" style="display: none;">
-            <h4>📝 Texto extraído da imagem:</h4>
+        <section id="extractedText" class="extracted-text" style="display: none;" aria-label="Texto extraído">
+            <h2>📝 Texto extraído da imagem:</h2>
             <div id="extractedContent"></div>
-        </div>
+        </section>
 
-        <div id="result" class="result">
-            <div class="result-icon" id="resultIcon"></div>
-            <div class="result-title" id="resultTitle"></div>
+        <section id="result" class="result" role="alert" aria-live="assertive">
+            <div class="result-icon" id="resultIcon" aria-hidden="true"></div>
+            <h2 class="result-title" id="resultTitle"></h2>
             <div class="result-description" id="resultDescription"></div>
             <div class="confidence-score" id="confidenceScore"></div>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
@@ -394,8 +484,12 @@
 
         function switchTab(tab) {
             // Update tab buttons
-            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-selected', 'false');
+            });
             event.target.classList.add('active');
+            event.target.setAttribute('aria-selected', 'true');
 
             // Update tab content
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));

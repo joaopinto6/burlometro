@@ -1,3 +1,0 @@
-I want to create a website where users can upload a photo (should then be parsed with a free OCR library) or a text from their messages, and an AI (from openrouter like deepseek/deepseek-chat-v3-0324:free) can tell if the message is a scam or no.
-Make it minimalist and modern like the iphone message interface.
-Make it responsive for computer and mobile.
